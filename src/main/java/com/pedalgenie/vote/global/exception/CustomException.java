@@ -1,4 +1,4 @@
-package com.pedalgenie.vote.exception;
+package com.pedalgenie.vote.global.exception;
 import lombok.Getter;
 
 @Getter

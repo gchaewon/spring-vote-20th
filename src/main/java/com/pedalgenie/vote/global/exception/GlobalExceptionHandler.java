@@ -1,4 +1,4 @@
-package com.pedalgenie.vote.exception;
+package com.pedalgenie.vote.global.exception;
 
 import com.pedalgenie.vote.global.ResponseTemplate;
 import org.springframework.http.HttpStatus;

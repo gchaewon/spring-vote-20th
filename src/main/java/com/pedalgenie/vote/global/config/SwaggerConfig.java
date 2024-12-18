@@ -1,4 +1,4 @@
-package com.pedalgenie.vote.config;
+package com.pedalgenie.vote.global.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
