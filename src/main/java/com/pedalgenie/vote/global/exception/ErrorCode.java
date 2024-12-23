@@ -10,6 +10,9 @@ public enum ErrorCode {
     // 400
     BAD_REQUEST(HttpStatus.BAD_REQUEST, 400, "잘못된 요청입니다."),
     PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, 400, "비밀번호가 일치하지 않습니다."),
+    NOT_EXISTS_PART_MEMBER(HttpStatus.BAD_REQUEST, 400, "해당 파트의 구성원이 아닙니다."),
+    CANNOT_VOTE_FOR_ANOTHER_PART(HttpStatus.BAD_REQUEST, 400, "다른 파트의 후보를 투표할 수 없습니다."),
+    CANNOT_VOTE_FOR_OWN_TEAM(HttpStatus.BAD_REQUEST, 400, "자신의 팀을 투표할 수 없습니다."),
 
     // 401
     AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, 401, "인증에 실패했습니다."),
@@ -32,6 +35,7 @@ public enum ErrorCode {
 
     // 409
     ALREADY_REGISTERED_MEMBER_EMAIL(HttpStatus.CONFLICT, 409, "이미 가입된 이메일입니다."),
+    ALREADY_VOTED(HttpStatus.CONFLICT, 409,  "이미 투표한 유저의 요청입니다."),
 
     // 500
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "서버 오류가 발생했습니다.");
