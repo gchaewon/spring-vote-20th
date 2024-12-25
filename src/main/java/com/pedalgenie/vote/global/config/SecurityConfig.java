@@ -42,18 +42,15 @@ public class SecurityConfig {
         http
                 // 접근 허용된 URI
                 .authorizeHttpRequests(auth ->auth
-                        .requestMatchers("/login",
-                                "/",
-                                "/api/auth").permitAll()
-                        .requestMatchers("/swwagger-ui/index.html",
-                                "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/login", "/", "/api/auth").permitAll()
+                        .requestMatchers("/swwagger-ui/index.html", "/v3/api-docs/**", "http://localhost:3000/**").permitAll()
                         .anyRequest().authenticated());
 
         // AuthenticationManager 생성
         AuthenticationManager authenticationManager = authenticationManager(authenticationConfiguration);
 
         // JwtAuthenticationFilter 설정
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtUtil);
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtUtil,memberRepository);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login"); // 로그인 URL 설정
 
         // 필터 추가

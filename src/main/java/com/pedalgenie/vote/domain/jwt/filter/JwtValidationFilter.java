@@ -67,6 +67,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
         // 해당 유저 정보 로드
         CustomUserDetails userDetails = new CustomUserDetails(member);
 
+
         // 인증 객체 생성(principal, credentials), 비밀번호는 인증 후 더 이상 필요하지 않으므로 null
         Authentication authToken =
                 new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());

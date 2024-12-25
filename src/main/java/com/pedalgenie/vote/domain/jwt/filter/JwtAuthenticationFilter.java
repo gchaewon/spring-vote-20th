@@ -3,6 +3,10 @@ package com.pedalgenie.vote.domain.jwt.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pedalgenie.vote.domain.jwt.JwtUtil;
 import com.pedalgenie.vote.domain.member.dto.LoginRequest;
+import com.pedalgenie.vote.domain.member.entity.Member;
+import com.pedalgenie.vote.domain.member.repostiory.MemberRepository;
+import com.pedalgenie.vote.global.exception.CustomException;
+import com.pedalgenie.vote.global.exception.ErrorCode;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,6 +31,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+    private final MemberRepository memberRepository;
 
     @PostConstruct
     public void init() {
@@ -46,6 +51,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             ServletInputStream inputStream = request.getInputStream();
             String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
             loginRequest = objectMapper.readValue(messageBody, LoginRequest.class);
+
 
             // 스프링 시큐리티에서 사용자의 인증 정보(username, password)를 검증하기 위해서는 token(dto)에 담아야 함
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
@@ -81,9 +87,28 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("access", access);
         response.setStatus(HttpStatus.OK.value());
 
+        // 프론트에 넘겨주기 위한 JSON 응답
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"result\": \"로그인이 성공적으로 완료되었습니다.\"}");
+
         // 시큐리티 컨텍스트 홀더에 저장
         SecurityContextHolder.getContext().setAuthentication(authResult);
 
+    }
+
+    // 로그인 실패 시
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request,HttpServletResponse response,
+                                              AuthenticationException failed) throws IOException, ServletException {
+
+//        super.unsuccessfulAuthentication(request, response, failed);
+
+        // 프론트에 넘겨주기 위한 JSON 응답
+        response.setStatus(401);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"result\": \"로그인에 실패하였습니다.\"}");
     }
 
 
