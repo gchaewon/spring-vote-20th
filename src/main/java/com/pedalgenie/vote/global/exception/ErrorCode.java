@@ -30,11 +30,13 @@ public enum ErrorCode {
 
     // 404
     NOT_EXISTS_MEMBER_ID(HttpStatus.NOT_FOUND, 404, "존재하지 않는 멤버 아이디입니다."),
-    NOT_EXISTS_MEMBER_NICKNAME(HttpStatus.NOT_FOUND, 404, "존재하지 않는 멤버 닉네임입니다."),
+    NOT_EXISTS_MEMBER_NAME(HttpStatus.NOT_FOUND, 404, "존재하지 않는 멤버 이름입니다."),
     NOT_EXISTS_MEMBER_EMAIL(HttpStatus.NOT_FOUND, 404, "존재하지 않는 멤버 이메일입니다."),
+
 
     // 409
     ALREADY_REGISTERED_MEMBER_EMAIL(HttpStatus.CONFLICT, 409, "이미 가입된 이메일입니다."),
+    ALREADY_REGISTERED_LOGIN_ID(HttpStatus.CONFLICT,409,"이미 가입된 아이디입니다."),
     ALREADY_VOTED(HttpStatus.CONFLICT, 409,  "이미 투표한 유저의 요청입니다."),
 
     // 500

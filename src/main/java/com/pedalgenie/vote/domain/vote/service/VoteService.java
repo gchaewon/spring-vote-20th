@@ -75,7 +75,7 @@ public class VoteService {
         leaderVoteRepository.save(leaderVote);
 
         return VoteResponseDto.builder()
-                .voter(voter.getName())
+                .voter(voter.getUsername())
                 .voted(partMember)
                 .build();
     }
@@ -103,7 +103,7 @@ public class VoteService {
         teamVoteRepository.save(teamVote);
 
         return VoteResponseDto.builder()
-                .voter(voter.getName())
+                .voter(voter.getUsername())
                 .voted(votedTeam)
                 .build();
     }

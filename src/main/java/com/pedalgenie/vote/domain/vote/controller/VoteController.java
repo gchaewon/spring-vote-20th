@@ -1,5 +1,6 @@
 package com.pedalgenie.vote.domain.vote.controller;
 
+import com.pedalgenie.vote.domain.auth.CustomUserDetails;
 import com.pedalgenie.vote.domain.vote.dto.VoteResultDto;
 import com.pedalgenie.vote.domain.vote.service.VoteService;
 import com.pedalgenie.vote.domain.vote.dto.VoteRequestDto;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,9 +29,10 @@ public class VoteController {
     public ResponseEntity<ResponseTemplate<VoteResponseDto>> createVote(
             @RequestParam String type,
             @RequestParam(required = false) String part,
-            @RequestParam String voted
+            @RequestParam String voted,
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        Long memberId = 1L; // static, 추후 인증 정보로 변경 예정
+        Long memberId = userDetails.getMemberId(); // 인증 정보로 변경
 
         VoteRequestDto requestDto = VoteRequestDto.builder()
                 .type(type)
