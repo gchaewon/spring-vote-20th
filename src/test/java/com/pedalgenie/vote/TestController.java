@@ -7,6 +7,6 @@ public class TestController {
 
     @GetMapping("/test")
     public String testPage() {
-        return "git hub actions CI/CD 테스트, pem key 업데이트 후";
+        return "git hub actions CI/CD 테스트, key begin, end 삭제 및 업데이트 버전";
     }
 }
