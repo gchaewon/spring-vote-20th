@@ -7,6 +7,6 @@ public class TestController {
 
     @GetMapping("/test")
     public String testPage() {
-        return "git hub actions CI/CD 테스트";
+        return "git hub actions CI/CD 테스트, 인스턴스 변경 후";
     }
 }
