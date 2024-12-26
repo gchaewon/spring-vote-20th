@@ -38,7 +38,7 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }} # EC2 public DNS
-        username: ubuntu
+        username: ec2-user
         key: ${{ secrets.KEY }} # .pem key
         script: |
           # 원하는 경로로 이동
