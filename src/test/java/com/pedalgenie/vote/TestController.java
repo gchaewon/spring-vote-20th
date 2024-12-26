@@ -7,6 +7,6 @@ public class TestController {
 
     @GetMapping("/test")
     public String testPage() {
-        return "git hub actions CI/CD 테스트, key begin, end 삭제 및 업데이트 버전";
+        return "git hub actions CI/CD 테스트, ec2 도커 설치 후 버전";
     }
 }
