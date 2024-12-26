@@ -17,6 +17,9 @@ spring:
     dialect: org.hibernate.dialect.MySQL8Dialect  # 이 항목 추가
 jwt:
   secret: ${JWT}
+server:
+  port: 8080
+  address: 0.0.0.0
 
 #----필요시 사용------
 #redis:
