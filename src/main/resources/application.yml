@@ -2,9 +2,9 @@ spring:
   config:
     import: optional:file:.env[.properties]
   datasource:
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://${secrets.DB_HOST}:${secrets.DB_PORT}/${secrets.DB_NAME}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ${secrets.DB_USER}
+    password: ${secrets.DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -16,7 +16,7 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     dialect: org.hibernate.dialect.MySQL8Dialect  # 이 항목 추가
 jwt:
-  secret: ${JWT}
+  secret: ${secrets.JWT}
 
 #----필요시 사용------
 #redis:
