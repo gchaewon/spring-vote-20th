@@ -58,4 +58,4 @@ jobs:
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/ceos:latest
 
           # 새로운 Docker 컨테이너 실행
-          sudo docker run -d --name app-container --env-file .env --network host -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/ceos:latest
+          sudo docker run -d --name app-container --env-file .env -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/ceos:latest
