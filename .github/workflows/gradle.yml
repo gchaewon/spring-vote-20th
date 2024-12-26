@@ -42,7 +42,8 @@ jobs:
         key: ${{ secrets.KEY }} # .pem key
         script: |
           # 원하는 경로로 이동
-          cd /home/ubuntu/app
+          mkdir -p /home/ec2-user/app
+          cd /home/ec2-user/app
 
           # .env 파일 생성 (필요한 환경 변수 설정)
           sudo touch .env
