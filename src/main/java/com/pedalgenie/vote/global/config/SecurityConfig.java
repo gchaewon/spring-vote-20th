@@ -13,12 +13,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -35,6 +39,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable);
@@ -42,8 +47,8 @@ public class SecurityConfig {
         http
                 // 접근 허용된 URI
                 .authorizeHttpRequests(auth ->auth
-                        .requestMatchers("/login", "/", "/api/auth").permitAll()
-                        .requestMatchers("/swwagger-ui/index.html", "/v3/api-docs/**", "http://localhost:3000/**").permitAll()
+                        .requestMatchers("/login", "/api/auth").permitAll()
+                        .requestMatchers("/swagger-ui/index.html", "/v3/api-docs/**", "http://localhost:3000/**").permitAll()
                         .anyRequest().authenticated());
 
         // AuthenticationManager 생성
@@ -62,6 +67,23 @@ public class SecurityConfig {
                 .sessionManagement((session)->session.sessionCreationPolicy(STATELESS));
 
         return http.build();
+    }
+    protected CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", getDefaultCorsConfiguration());
+        return source;
+    }
+
+    private CorsConfiguration getDefaultCorsConfiguration() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("http://localhost:8080");
+        // 프론트 배포 url 추가 필요
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
+        config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
+        return config;
     }
 
     // AuthenticationManager 빈 등록
