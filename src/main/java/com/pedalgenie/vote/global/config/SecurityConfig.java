@@ -83,14 +83,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // 필터 체인에서 제외 (토큰 불필요)
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> {
-            web.ignoring()
-                    .requestMatchers(ALLOWED_URIS.toArray(new String[0]));
-        };
-    }
 
     protected CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
