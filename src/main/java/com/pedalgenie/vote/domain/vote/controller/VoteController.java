@@ -18,14 +18,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/votes")
 @Tag(name = "Vote Controller", description="투표 API \n 생성, 조회 로직을 포함합니다.")
 public class VoteController {
     private final VoteService voteService;
 
     // 투표 생성
     @Operation(summary = "투표 생성")
-    @PostMapping
+    @PostMapping("/votes")
     public ResponseEntity<ResponseTemplate<VoteResponseDto>> createVote(
             @RequestParam String type,
             @RequestParam(required = false) String part,
@@ -46,7 +45,7 @@ public class VoteController {
 
     // 후보 조회
     @Operation(summary = "후보 조회")
-    @GetMapping("/candidates")
+    @GetMapping("/api/votes/candidates")
     public ResponseEntity<ResponseTemplate<List<String>>> getCandidates(
             @RequestParam String type,
             @RequestParam(required = false) String part
@@ -58,7 +57,7 @@ public class VoteController {
 
     // 투표 결과 조회
     @Operation(summary = "투표 결과 조회")
-    @GetMapping("/results")
+    @GetMapping("/api/votes/results")
     public ResponseEntity<ResponseTemplate<List<VoteResultDto>>> getResults(
             @RequestParam String type,
             @RequestParam(required = false) String part
