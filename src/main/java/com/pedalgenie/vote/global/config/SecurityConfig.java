@@ -24,6 +24,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
@@ -34,6 +37,18 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final TokenValidator tokenValidator;
     private final MemberRepository memberRepository;
+
+    // 허용된 URI 목록
+    private static final List<String> ALLOWED_URIS = Arrays.asList(
+            "/swagger-ui/index.html",
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/webjars/**",
+            "/api/**",
+            "http://localhost:3000/**"
+    );
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -46,9 +61,8 @@ public class SecurityConfig {
 
         http
                 // 접근 허용된 URI
-                .authorizeHttpRequests(auth ->auth
-                        .requestMatchers("/login", "/api/auth").permitAll()
-                        .requestMatchers("/swagger-ui/index.html", "/v3/api-docs/**", "http://localhost:3000/**").permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(ALLOWED_URIS.toArray(new String[0])).permitAll()
                         .anyRequest().authenticated());
 
         // AuthenticationManager 생성
@@ -56,7 +70,7 @@ public class SecurityConfig {
 
         // JwtAuthenticationFilter 설정
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtUtil,memberRepository);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/login"); // 로그인 URL 설정
+        jwtAuthenticationFilter.setFilterProcessesUrl("/api/login"); // 로그인 URL 설정
 
         // 필터 추가
         http
@@ -68,6 +82,16 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    // 필터 체인에서 제외 (토큰 불필요)
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> {
+            web.ignoring()
+                    .requestMatchers(ALLOWED_URIS.toArray(new String[0]));
+        };
+    }
+
     protected CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", getDefaultCorsConfiguration());
