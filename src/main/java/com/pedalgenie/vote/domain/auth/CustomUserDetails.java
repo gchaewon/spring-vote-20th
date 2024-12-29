@@ -29,7 +29,7 @@ public class CustomUserDetails implements UserDetails {
     }
     @Override
     public String getUsername() {
-        return member.getUsername();
+        return member.getLoginId(); // 로그인 아이디 리턴
     }
 
     // memberId 얻는 메서드 추가

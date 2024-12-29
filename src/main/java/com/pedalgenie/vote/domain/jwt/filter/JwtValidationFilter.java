@@ -1,7 +1,6 @@
 package com.pedalgenie.vote.domain.jwt.filter;
 
 import com.pedalgenie.vote.domain.auth.CustomUserDetails;
-import com.pedalgenie.vote.domain.auth.CustomUserDetailsService;
 import com.pedalgenie.vote.domain.jwt.JwtUtil;
 import com.pedalgenie.vote.domain.jwt.TokenValidator;
 import com.pedalgenie.vote.domain.member.entity.Member;
@@ -15,13 +14,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class JwtValidationFilter extends OncePerRequestFilter {
@@ -57,12 +54,12 @@ public class JwtValidationFilter extends OncePerRequestFilter {
     // jwt 토큰 사용해서 사용자 인증, SecurityContext 에 인증 정보 설정
     private void setAuthentication(String accessToken){
 
-        // 토큰에서 유저 이름 추출
-        String username = jwtUtil.getUsername(accessToken);
+        // 토큰에서 유저 아이디 추출
+        String loginId = jwtUtil.getLoginId(accessToken);
 
         // 유저 디비에서 이름 찾기
-        Member member = memberRepository.findByUsername(username)
-                .orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTS_MEMBER_NAME));
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(()-> new CustomException(ErrorCode.NOT_EXISTS_MEMBER_ID));
 
         // 해당 유저 정보 로드
         CustomUserDetails userDetails = new CustomUserDetails(member);
