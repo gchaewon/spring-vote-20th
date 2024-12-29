@@ -2,7 +2,6 @@ package com.pedalgenie.vote.domain.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -25,20 +24,20 @@ public class JwtUtil {
         this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8),"HmacSHA256");
     }
 
-    public String createJwt(final String category,final String username, Long expiredMs){
+    public String createJwt(final String category,final String loginId, Long expiredMs){
         return Jwts.builder()
                 .claim("category", category)
-                .claim("username", username)
+                .claim("loginId", loginId)
                 .setIssuedAt(new Date(System.currentTimeMillis())) // 발급 시간
                 .setExpiration(new Date(System.currentTimeMillis()+ expiredMs)) // 만료 시간
                 .signWith(secretKey, HS256)
                 .compact();
     }
 
-    // 토큰에서 유저네임 추출 메서드
-    public String getUsername(final String token){
+    // 토큰에서 로그인 아이디 추출 메서드
+    public String getLoginId(final String token){
         Claims claims= getPayload(token);
-        return claims.get("username", String.class);
+        return claims.get("loginId", String.class);
     }
 
     // 토큰에서 카테고리(액세스, 리프레시) 추출 메서드

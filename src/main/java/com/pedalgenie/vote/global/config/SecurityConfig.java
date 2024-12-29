@@ -99,6 +99,7 @@ public class SecurityConfig {
         config.addAllowedHeader("*");
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
+        config.addExposedHeader("access"); // 헤더 추가
         return config;
     }
 

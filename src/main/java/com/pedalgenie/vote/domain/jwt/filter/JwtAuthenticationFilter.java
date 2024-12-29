@@ -3,10 +3,7 @@ package com.pedalgenie.vote.domain.jwt.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pedalgenie.vote.domain.jwt.JwtUtil;
 import com.pedalgenie.vote.domain.member.dto.LoginRequest;
-import com.pedalgenie.vote.domain.member.entity.Member;
 import com.pedalgenie.vote.domain.member.repostiory.MemberRepository;
-import com.pedalgenie.vote.global.exception.CustomException;
-import com.pedalgenie.vote.global.exception.ErrorCode;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -53,9 +50,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             loginRequest = objectMapper.readValue(messageBody, LoginRequest.class);
 
 
-            // 스프링 시큐리티에서 사용자의 인증 정보(username, password)를 검증하기 위해서는 token(dto)에 담아야 함
+            // 스프링 시큐리티에서 사용자의 인증 정보(loginId, password)를 검증하기 위해서는 token(dto)에 담아야 함
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                    new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password());
+                    new UsernamePasswordAuthenticationToken(loginRequest.loginId(), loginRequest.password());
 
             // token에 담은 값들의 검증을 위해 AuthenticationManager로 전달 -> 검증 진행
             return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
@@ -72,16 +69,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             throws IOException, ServletException{
 
         // CustomUserDetails의 메서드에서 추출한 값
-        final String username = authResult.getName();
-
-        // 권한 목록에 있는 권한을 추출(ROLE_USER)
-        String role = authResult.getAuthorities()
-                .iterator()
-                .next()
-                .getAuthority();
+        final String loginId = authResult.getName();
 
         // 토큰 생성
-        String access = jwtUtil.createJwt("access", username,1000L * 60 * 60 * 2); // 2시간
+        String access = jwtUtil.createJwt("access", loginId,1000L * 60 * 60 * 2); // 2시간
 
         // 응답 설정: 헤더 key 값을 access로 설정
         response.setHeader("access", access);

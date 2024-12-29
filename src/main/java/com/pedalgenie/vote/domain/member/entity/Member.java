@@ -19,6 +19,7 @@ public class Member extends BaseTimeEntity {
     private Long memberId;
 
     @NotNull
+    @Column(nullable = false, unique = true)
     private String loginId;
 
     @NotNull
