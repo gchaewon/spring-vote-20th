@@ -47,7 +47,8 @@ public class SecurityConfig {
             "/swagger-resources/**",
             "/webjars/**",
             "/api/**",
-            "http://localhost:3000/**"
+            "http://localhost:3000/**",
+            "https://ceos-vote-20th.vercel.app/**"
     );
 
     @Bean
@@ -93,8 +94,8 @@ public class SecurityConfig {
     private CorsConfiguration getDefaultCorsConfiguration() {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("https://ceos-vote-20th.vercel.app");
         config.addAllowedOrigin("http://localhost:8080");
-        // 프론트 배포 url 추가 필요
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.setAllowCredentials(true);
