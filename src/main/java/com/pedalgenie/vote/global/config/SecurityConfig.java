@@ -22,6 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
@@ -64,6 +65,7 @@ public class SecurityConfig {
                 // 접근 허용된 URI
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(ALLOWED_URIS.toArray(new String[0])).permitAll()
+                        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                         .anyRequest().authenticated());
 
         // AuthenticationManager 생성
